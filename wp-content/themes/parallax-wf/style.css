@@ -157,3 +157,54 @@ div.entry-content {
 img.alignleft, img.aligncenter, img.alignright, img.alignnone {
     margin-bottom: .25em;
 }
+
+
+
+
+
+/* --CUSTOM STYLE START-- */
+.lcp_catlist {
+  margin: 0;
+}
+ul.lcp_catlist li {
+  border-bottom: 1px solid #ddd;
+  display: inline-block;
+  float: left;
+  margin-bottom: 30px;
+}
+ul.lcp_catlist li:last-child {
+  border: 0 none;
+}
+.lcpDisplay {
+  float: left;
+  margin: 5px 4% 0 0;
+  width: 18%;
+}
+.lcpDisplay img {
+  height: auto;
+  width: 180px;
+}
+.lcpContent {
+  float: left;
+  width: 78%;
+}
+.lcpContent > a {
+  display: block;
+}
+.spNm {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+.spTt {
+  font-size: 12px;
+}
+.spDt {
+	margin-bottom: 10px;
+	display:block;
+	font-size: 12px;
+}
+.lcpContent > p {
+  text-align: justify;
+}
+/* --CUSTOM STYLE END -- */
