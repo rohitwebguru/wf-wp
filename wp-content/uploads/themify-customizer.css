@@ -1,0 +1,25 @@
+/* Themify Customize Styling */
+#headerwrap {	background-image: url(http://wonderfest.org/wp-content/uploads/2016/03/MilkyWayTree.jpg); 
+}
+#site-description {	
+	font-family:Poppins;	font-weight:bold;
+	font-weight:bold;
+	font-size:140%;
+	line-height:10px;
+	text-transform:uppercase;
+	color: #d9e8ff;
+	color: rgba(217,232,255,1.00); 
+}
+#main-nav a {	
+	font-family:'Trebuchet MS', Arial, Helvetica, sans-serif;
+	color: #e6eaf7;
+	color: rgba(230,234,247,1.00); 
+}
+
+/* Themify Custom CSS */
+a, .post-nav .arrow, .widget a {
+	    color: #000;    font-weight: 600;
+}
+div.entry-content {
+	    color: #505050;
+}

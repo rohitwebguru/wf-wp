@@ -1,0 +1,17 @@
+Vor // before 15. März // March 2007:
+-------------------------------
+
+- nicht dokumentiert
+
+15. 03. 2007:
+-------------
+
+- Neue Dateien // New Files: header.php, footer.php, sidebar.php, single.php functions.php
+- Einige Veränderungen in der CSS-Datei // Small Changes in the CSS file
+- Bereit für Sidebar-Widgets // Ready for Sidebar Widgets
+- Folgende Plugins wurden berücksichtigt und durch Abfrage eingebaut // This Plugins are "included": Jeromes Keywords, Live Preview, Comment Quciktags, Comment Smileys (WP-Grins), Theme Switcher, Pagebar.
+
+23. 03. 2007:
+-------------
+- Kleine Änderungen in der sidebar.php, single.php und index.php // Small changes in sidebar.php, single.php and index.php
+- Das Theme ist nun gleichzeitig kompatibel zu WP 2.0.x und 2.1.x // The Theme is now ompatible with WP 2.0.x and 2.1.x

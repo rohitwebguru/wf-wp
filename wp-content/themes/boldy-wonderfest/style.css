@@ -1,0 +1,21 @@
+/*
+Theme Name:     Boldy Wonderfest (child)
+Description:    Child theme of Boldly 
+Author:         Eric Yao
+Template:       boldy
+Version:        1.0.0
+*/
+.envoy-item {
+  margin-bottom: 5px;
+  padding-right: 7px;
+};
+
+.wfstats > p {
+	color: #ddd !important;
+}
+/* for widget on donate page */
+.gxParticipantWidgetH1 {
+	margin-left: 180px;
+}
+
+@import url("../boldy/style.css");
