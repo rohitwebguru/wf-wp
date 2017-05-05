@@ -4,7 +4,6 @@ require_once ( LCP_PATH . 'lcp-thumbnail.php' );
 require_once ( LCP_PATH . 'lcp-parameters.php' );
 require_once ( LCP_PATH . 'lcp-utils.php' );
 require_once ( LCP_PATH . 'lcp-category.php' );
-
 /**
  * The CatList object gets the info for the CatListDisplayer to show.
  * Each time you use the shortcode, you get an instance of this class.
@@ -18,7 +17,6 @@ class CatList{
   private $posts_count = 0;
   private $instance = 0;
   private $utils;
-
   /**
    * Constructor gets the shortcode attributes as parameter
    * @param array $atts
@@ -31,12 +29,10 @@ class CatList{
     );
     $this->params = $atts;
     $this->utils = new LcpUtils($this->params);
-
     if ( $this->utils->lcp_not_empty('instance') ){
       $this->instance = $atts['instance'];
     }
   }
-
   /**
    * Determine the categories of posts and execute the WP_query
    */
@@ -44,7 +40,6 @@ class CatList{
     $this->get_lcp_category();
     $this->set_lcp_parameters();
   }
-
   /**
    * Save the existing wp_query
    */
@@ -54,7 +49,6 @@ class CatList{
       $this->saved_wp_query = clone $wp_query;
     }
   }
-
   /**
    * Restore the previous wp_query
    */
@@ -64,7 +58,6 @@ class CatList{
       $wp_query = clone $this->saved_wp_query;
     }
   }
-
   /**
    * Order the parameters and query the DB for posts
    */
@@ -73,18 +66,15 @@ class CatList{
     $processed_params = LcpParameters::get_instance()->get_query_params($this->params);
     $args = array_merge($args, $processed_params);
     $args = $this->check_pagination($args);
-
     // for WP_Query compatibility
     // http://core.trac.wordpress.org/browser/tags/3.7.1/src/wp-includes/post.php#L1686
     $args['posts_per_page'] = $args['numberposts'];
-
     query_posts($args);
     global $wp_query;
     $this->posts_count = $wp_query->found_posts;
     remove_all_filters('posts_orderby');
     remove_filter('posts_where', array( $this, 'starting_with'));
   }
-
   /* Should I return posts or show that the tag/category or whatever
      posts combination that I called has no posts? By default I've
      always returned the latest posts because that's what the query
@@ -108,7 +98,6 @@ class CatList{
     }
     return $args;
   }
-
   /**
    * Check if there's one or more categories.
    * Used in the beginning when setting up the parameters.
@@ -125,7 +114,6 @@ class CatList{
       return array('cat'=> $this->lcp_category_id);
     }
   }
-
   private function get_lcp_category(){
     // In a category page:
     if ( $this->utils->lcp_not_empty('categorypage') &&
@@ -141,18 +129,14 @@ class CatList{
       // Using the id:
       $this->lcp_category_id = LcpCategory::get_instance()->with_id( $this->params['id'] );
     }
-
   }
-
   public function get_category_id(){
     return $this->lcp_category_id;
   }
-
   public function get_categories_posts(){
     global $wp_query;
     return $wp_query->get_posts();
   }
-
   /**
    * Load category name and link to the category:
    */
@@ -169,27 +153,23 @@ class CatList{
       } else{
         $ids = explode(",", $this->lcp_category_id);
       }
-
       $link = array();
       // Loop on several categories:
       foreach($ids as $lcp_id){
         $cat_link = get_category_link($lcp_id);
         $cat_title = get_cat_name($lcp_id);
-
         // Use the category title or 'catlink_string' set by user:
         if ($this->utils->lcp_not_empty('catlink_string')){
           $cat_string = $this->params['catlink_string'];
         } else {
           $cat_string = $cat_title;
         }
-
         // Do we want the link or just the title?
         if ($this->params['catlink'] == 'yes'){
           $cat_string = '<a href="' . $cat_link . '" title="' . $cat_title . '">' .
                       $cat_string .
                       $this->get_category_count() .  '</a>';
         }
-
         array_push($link, $cat_string);
       }
       return implode(", ", $link);
@@ -197,7 +177,6 @@ class CatList{
       return null;
     }
   }
-
   /**
    * Load morelink name and link to the category:
    */
@@ -210,15 +189,11 @@ class CatList{
       return null;
     endif;
   }
-
-
-
   public function get_category_count(){
     if($this->utils->lcp_not_empty('category_count') && $this->params['category_count'] == 'yes'):
       return ' ' . get_category($this->lcp_category_id)->category_count;
     endif;
   }
-
   public function get_category_description(){
     if ($this->utils->lcp_not_empty('category_description') && $this->params['category_description'] == 'yes'){
       return '<p>' . category_description( $this->lcp_category_id) . '</p>';
@@ -229,7 +204,6 @@ class CatList{
       return trim($this->params['conditional_title']);
     endif;
   }
-
   /**
    * Array of custom fields.
    * @see http://codex.wordpress.org/Function_Reference/get_post_custom
@@ -239,16 +213,12 @@ class CatList{
   public function get_custom_fields($custom_key, $post_id){
     if ( $this->utils->lcp_not_empty( 'customfield_display' ) ) :
       $lcp_customs = array();
-
       //Doesn't work for many custom fields when having spaces:
       $custom_key = trim( $custom_key );
-
       //Create array for many fields:
       $custom_array = explode( ',', $custom_key );
-
       //Get post custom fields:
       $custom_fields = get_post_custom( $post_id );
-
       //Loop on custom fields and if there's a value, add it:
       foreach ( $custom_array as $user_customfield ) :
         // Check that the custom field is wanted:
@@ -261,13 +231,11 @@ class CatList{
           endforeach;
         endif;
       endforeach;
-
       return $lcp_customs;
     else:
       return null;
     endif;
   }
-
   public function get_comments_count($single){
     if (isset($this->params['comments']) &&
     $this->params['comments'] == 'yes'):
@@ -276,7 +244,6 @@ class CatList{
       return null;
     endif;
   }
-
   public function get_author_to_show($single){
     if ($this->params['author'] == 'yes'):
       $lcp_userdata = get_userdata($single->post_author);
@@ -293,25 +260,19 @@ class CatList{
       return null;
     endif;
   }
-
-
   /** Pagination **/
   public function get_page(){
     return $this->page;
   }
-
   public function get_posts_count(){
     return $this->posts_count;
   }
-
   public function get_number_posts(){
     return $this->params['numberposts'];
   }
-
   public function get_instance(){
     return $this->instance;
   }
-
   public function get_date_to_show($single){
     if ($this->params['date'] == 'yes'):
       //by Verex, great idea!
@@ -320,7 +281,6 @@ class CatList{
       return null;
     endif;
   }
-
   public function get_modified_date_to_show($single){
     if ($this->params['date_modified'] == 'yes'):
       return get_the_modified_time($this->params['dateformat'], $single);
@@ -328,7 +288,6 @@ class CatList{
       return null;
     endif;
   }
-
   public function get_content($single){
     if (isset($this->params['content']) &&
     ($this->params['content'] =='yes' || $this->params['content'] =='full') &&
@@ -336,7 +295,6 @@ class CatList{
       $lcp_content = $single->post_content;
       $lcp_content = apply_filters('the_content', $lcp_content);
       $lcp_content = str_replace(']]>', ']]&gt', $lcp_content);
-
       if ($this->params['content'] =='yes' &&
         preg_match('/[\S\s]+(<!--more(.*?)?-->)[\S\s]+/', $lcp_content, $matches) ):
         if( empty($this->params['posts_morelink']) ):
@@ -349,17 +307,14 @@ class CatList{
           ' <a href="' . get_permalink($single->ID) . '" title="' . "$lcp_more" . '">' .
           $lcp_more . '</a>' : '');
       endif;
-
       return $lcp_content;
     else:
       return null;
     endif;
   }
-
   public function get_excerpt($single){
     if ( !empty( $this->params['excerpt'] ) &&
          ( $this->params['excerpt']=='yes' || $this->params['excerpt']=='full') ){
-
       if( $single->post_excerpt == "" ||
          ( !empty($this->params['excerpt_overwrite']) && $this->params['excerpt_overwrite'] == 'yes' ) ){
         // No explicit excerpt or excerpt_overwrite=yes, so generate from content:
@@ -386,19 +341,15 @@ class CatList{
       return $lcp_excerpt;
     }
   }
-
   private function lcp_trim_excerpt($text = ''){
     $excerpt_length = intval( $this->params['excerpt_size'] );
-
     $text = strip_shortcodes($text);
     $text = apply_filters('the_excerpt', $text);
     $text = str_replace(']]>',']]&gt;', $text);
-
     if( $this->utils->lcp_not_empty('excerpt_strip') &&
         $this->params['excerpt_strip'] == 'yes' ){
       $text = strip_tags($text);
     }
-
     $words = explode(' ', $text, $excerpt_length + 1);
     if(count($words) > $excerpt_length){
       array_pop($words);
@@ -407,7 +358,6 @@ class CatList{
     }
     return $text;
   }
-
   public function get_thumbnail($single, $lcp_thumb_class = null){
     if ($this->utils->lcp_not_empty('force_thumbnail')){
       $force_thumbnail = $this->params['force_thumbnail'];
@@ -421,5 +371,4 @@ class CatList{
       $force_thumbnail,
       $lcp_thumb_class);
   }
-
 }
